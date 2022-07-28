@@ -5,7 +5,7 @@ description:        "Hello, my name is Dayeon Jung. I'm interested in High Dimen
 reading_time:       true
 words_per_minute:   200
 logo:               'assets/img/dayeon.png'
-background:         'assets/img/sky.jpg'
+background:         'assets/img/common.jpg'
 tiled_bg:           false   # Set this true if you want to tile your background image, otherwise it will be covered
 locale:             en_US
 url:                https://jdy5294.github.io
