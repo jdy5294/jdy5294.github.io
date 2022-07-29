@@ -1,0 +1,80 @@
+---
+title: "FDR controling method"
+author: "Jung Da Yeon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. BH (Benjamini and Hochberg)
+
+```{r BH}
+if (!require("stats")) install.packages("stats")
+p = c(0.0001, 0.0004, 0.0019, 0.0095, 0.0201, 0.0278, 0.0298, 0.0344, 0.0459, 0.3240, 0.4262, 0.5719, 0.6528, 0.7590, 1.000)
+BH = p.adjust(p, method = "BH", n = length(p))
+print(data.frame(pvals = round(p,3), BH = round(BH, 3)))
+print(sum(p <= 0.05, na.rm = TRUE))
+print(sum(BH <= 0.05, na.rm = TRUE))
+```
+
+# 2. IHW (Independent Hypothesis Weighting)
+
+```{r IHW warning = FALSE, message=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+
+# BiocManager::install("IHW")
+# BiocManager::install("DESeq2")
+# BiocManager::install("airway")
+
+library("DESeq2")
+library("dplyr")
+library("IHW")
+
+data("airway", package = "airway")
+dds <- DESeqDataSet(se = airway, design = ~ cell + dex) %>% DESeq # ~ group + condition
+deRes <- as.data.frame(results(dds))
+ihwRes <- ihw(pvalue ~ baseMean,  data = deRes, alpha = 0.1) # 	formula, specified in the form pvalue~covariate
+
+print(paste0('rejection # of ihw is ', rejections(ihwRes)))
+
+print(paste0('rejection # of ihw is ', sum(adj_pvalues(ihwRes) <= 0.1, na.rm = TRUE), ', too'))
+
+print(paste0('rejection # of original is ', sum(deRes$pvalue <= 0.1, na.rm = TRUE)))
+
+print(paste0('rejection # of BH is ', sum(p.adjust(deRes$pvalue, method="BH", n = length(deRes$pvalue)) <= 0.1, na.rm = TRUE)))
+```
+
+
+# 3. Storey q-value
+
+```{r IHW warning = FALSE, message=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+
+# BiocManager::install("IHW")
+# BiocManager::install("DESeq2")
+# BiocManager::install("airway")
+
+library("DESeq2")
+library("dplyr")
+library("IHW")
+
+data("airway", package = "airway")
+dds <- DESeqDataSet(se = airway, design = ~ cell + dex) %>% DESeq # ~ group + condition
+deRes <- as.data.frame(results(dds))
+ihwRes <- ihw(pvalue ~ baseMean,  data = deRes, alpha = 0.1) # 	formula, specified in the form pvalue~covariate
+
+print(paste0('rejection # of ihw is ', rejections(ihwRes)))
+
+print(paste0('rejection # of ihw is ', sum(adj_pvalues(ihwRes) <= 0.1, na.rm = TRUE), ', too'))
+
+print(paste0('rejection # of original is ', sum(deRes$pvalue <= 0.1, na.rm = TRUE)))
+
+print(paste0('rejection # of BH is ', sum(p.adjust(deRes$pvalue, method="BH", n = length(deRes$pvalue)) <= 0.1, na.rm = TRUE)))
+```
