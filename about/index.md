@@ -2,12 +2,15 @@
 layout: page
 title: About me
 tags: []
-date: 2024-02-08
+date: 2024-03-05
 comments: false
 ---
     
 ## Name
 Dayeon Jung
+
+## Work Experience
+* Data Analyst in Samsung Electronics (2024~)
 
 ## Education
 * B.S. in Biotechnology & Applied statistics at Yonsei University (2017~2021)
@@ -19,5 +22,5 @@ Dayeon Jung
 * Data analysis
 
 ## Contact
-e-mail: jdy5294@snu.ac.kr or jdy5294@naver.com
+e-mail: jdy5294@naver.com
 
